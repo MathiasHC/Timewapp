@@ -1,0 +1,13 @@
+/*
+Template: 		enfold
+Theme Name:     Roskilde Antik
+Description:    This theme is created with love for "Roskilde Antik".
+Author:         Mathias Holmbo, IGNITERS
+Author URI:     http://www.igniters.dk/
+Theme URI:      http://www.roskildeantik.dk/
+Version:        1.0.0
+Text Domain:    roskildeantik
+*/
+
+@import url("../enfold/style.css");
+@import url("assets/css/child.css");
