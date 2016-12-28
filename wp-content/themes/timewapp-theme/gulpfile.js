@@ -1,96 +1,92 @@
-'use strict';
+var gulp              = require('gulp'),
+    sass              = require('gulp-sass'),
+    uglify            = require('gulp-uglify'),
+    autoprefixer      = require('gulp-autoprefixer'),
+    imagemin          = require('gulp-imagemin'),
+    rename            = require('gulp-rename'),
+    cache             = require('gulp-cache'),
+    notify            = require('gulp-notify'),
+    express           = require('express'),
+    jshint            = require('gulp-jshint'),
+    lr;
 
-//
-// Gulp requirements.
-// -------------------------------------------------------------
-var gulp        = require('gulp'),
-    concat      = require('gulp-concat'),
-    sass        = require('gulp-sass'),
-    uglify      = require('gulp-uglify'),
-    minifyCSS   = require('gulp-cssnano'),
-    del         = require('del'),
-    livereload  = require('gulp-livereload');
 
-//
-// Tasks
-// -------------------------------------------------------------
-gulp.task('css', function() {
-    return gulp.src('source/assets/sass/*.scss')
-        .pipe(sass({
-            errLogToConsole: true,
-            compass: true,
-            includePaths: ['./node_modules/compass-mixins/lib'],
-            sourcemap: true,
-            sourcemapPath: 'main.css'
-        }))
-        .pipe(minifyCSS())
-        .pipe(gulp.dest('assets/css/'));
+var EXPRESS_PORT    = 4000;
+var EXPRESS_ROOT    = __dirname;
+var LIVERELOAD_PORT = 35729;
+
+
+function notifyLR(event) {
+  var fileName = require('path').relative(EXPRESS_ROOT, event.path);
+  lr.changed({
+    body: { files: [fileName] }
+  });
+}
+
+// Starts the express server
+gulp.task('startExpress', function() {
+  var app = express();
+  app.use(require('connect-livereload')());
+  app.use(express.static(EXPRESS_ROOT));
+  app.listen(EXPRESS_PORT);
 });
 
-gulp.task('js', function() {
-    var FILES = [ 'source/assets/js/*.js' ];
-    gulp.src(FILES)
-        .pipe(uglify()
-            .on('error', function (error) {
-                console.warn(error.message);
-            }))
-        .pipe(gulp.dest('assets/js/'));
+// Starts livereload
+gulp.task('startLR', function() {
+  lr = require('tiny-lr')();
+  lr.listen(LIVERELOAD_PORT);
 });
 
-gulp.task('jade', function() {
-    var FILES = 'source/styleguide/**/*.jade';
-    gulp.src(FILES)
-        .pipe(jade({ pretty: true })
-            .on('error', function (error) {
-                console.warn(error.message);
-            }))
-        .pipe(gulp.dest('assets/styleguide/'));
+// Minifies and moves the styles to the dist folder
+gulp.task('styles', function() {
+    gulp.src('source/sass/**/*.scss')
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(autoprefixer('last 2 version'))
+        .pipe(gulp.dest('assets/css'))
+        .pipe(notify({ message: 'Styles updated' }))
 });
 
+// Minifies and moves the js to the dist folder
+gulp.task('scripts', function() {
+    gulp.src('source/js/*.js')
+      .pipe(jshint({ lookup: false }))
+      .pipe(jshint.reporter('default'))
+      .pipe(uglify())
+      .pipe(gulp.dest('assets/js'))
+      .pipe(rename({suffix: '.min'}))
+});
+
+// Optimizes the images
 gulp.task('images', function() {
-    var FILES = 'source/assets/images/*.*';
-    return gulp.src(FILES)
-        .pipe(livereload(FILES, function(files) {
-            return files.pipe( gulp.dest('assets/images/') );
-        }));
+    gulp.src('source/images/*')
+        .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
+        .pipe(gulp.dest('assets/images'))
 });
 
-gulp.task('fonts', function() {
-    var FILES = 'source/assets/fonts/*.*';
-    gulp.src(FILES)
-        .pipe(livereload(FILES, function(files) {
-            return files.pipe( gulp.dest('assets/fonts'));
-        }));
+// Default start task
+gulp.task('default', function() {
+    gulp.start(
+      'styles',
+      'scripts',
+      'images',
+      'startExpress',
+      'startLR',
+      'watch'
+    );
 });
 
-gulp.task('clean', function(cb){
-    return del(['assets/'], cb);
+gulp.task('lint', function() {
+  return gulp.src('./lib/*.js')
+
+    .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
 });
 
-gulp.task('public', function() {
-    var FILES = 'public/**/*.*';
-    gulp.src(FILES)
-        .pipe(livereload(FILES, function(files) {
-            return files.pipe( gulp.dest('public/'));
-        }));
-});
-
-// Let gulp keep an eye on our files and compile stuff if it changes.
+// Watch all the folders for changes
 gulp.task('watch', function() {
-    livereload.listen({
-        start: true
-    });
-    // Theme specific.
-    gulp.watch('source/assets/sass/**/*.scss',['css']);
-    gulp.watch('source/assets/js**/*.js',['js']);
-    gulp.watch('source/assets/images/*.*',['images']);
-
-});
-
-// Bringing it all together in a build task.
-gulp.task('build', ['js', 'css', 'images', 'fonts', 'public']);
-
-// Default task.
-gulp.task('default', ['clean'], function(){
-    gulp.start('build', 'watch');
+  gulp.watch('source/sass/*.scss', ['styles']);
+  gulp.watch('source/js/**/*.js', ['scripts']);
+  gulp.watch('source/images/**/*', ['images']);
+  gulp.watch('assets/js/**/*.js', notifyLR);
+  gulp.watch('assets/css/**/*.css', notifyLR);
+  gulp.watch('**/*.html', notifyLR);
 });
