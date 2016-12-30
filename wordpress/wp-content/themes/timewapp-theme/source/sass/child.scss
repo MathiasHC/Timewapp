@@ -1,0 +1,72 @@
+/* ==================
+Theme / TimeWapp
+=================== */
+
+/**
+ * TYPOGRAPHY
+ */
+.text-lead {
+    font-size: 1.1em;
+}
+.text-center {
+    text-align: center;
+}
+
+/**
+ * Frontpage styling
+ */
+.project-wrap {
+    display: block;
+    &:hover {
+        .frontpage-project,
+        .frontpage-project + .hentry,
+        .hentry + .hentry,
+        .page-header + .hentry,
+        .page-header + .page-content {
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(52,120,215,.8);
+        }
+    }
+}
+
+.frontpage-project,
+.frontpage-project + .hentry,
+.hentry + .hentry,
+.page-header + .hentry,
+.page-header + .page-content {
+    padding: 25px 15px;
+    &:after {
+        display: table;
+        content: '';
+        clear: both;
+    }
+    > .project-header, .project-total-time {
+        display: inline-block;
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    > .project-header {
+        width: 80%;
+        small {
+            display: block;
+            color: #c1c1c1;
+            font-weight: normal;
+        }
+    }
+    > .project-total-time {
+        width: 20%;
+        border-left: 1px solid #f7f7f7;
+        p {
+            margin-bottom: 0;
+        }
+        .total-time {
+            font-size: .8em;
+            color: #c1c1c1;
+        }
+    }
+}
+
+.frontpage-project + .hentry, .hentry + .hentry, .page-header + .hentry, .page-header + .page-content {
+    margin-top: 8px;
+}
