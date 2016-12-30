@@ -1,0 +1,30 @@
+<ion-view title="Login" hide-back-button="true" id="page7" style="background-color:#2C3E50;">
+  <ion-content padding="true" scroll="false" class="has-header">
+    <form id="login-form2" class="list">
+      <div>
+        <img src="img/SqStgV78TcqhUjWNEMVk_Logo.png" style="display: block; width: 100%; height: auto; margin-left: auto; margin-right: auto;">
+      </div>
+      <ion-list id="login-list3">
+        <label class="item item-select" id="login-select3" name="login_select">
+          <span class="input-label">Select Service</span>
+          <select>
+            <option>TimeWAPP</option>
+            <option>Harvest</option>
+            <option>Toggl</option>
+          </select>
+        </label>
+        <label class="item item-input" id="login-input5" name="login_name">
+          <span class="input-label">Username</span>
+          <input type="text" placeholder="">
+        </label>
+        <label class="item item-input" id="login-input6" name="login_password">
+          <span class="input-label">Password</span>
+          <input type="password" placeholder="">
+        </label>
+      </ion-list>
+      <div class="spacer" style="height: 40px;"></div>
+      <a ui-sref="tabsController.clients" id="login-button22" class="button button-stable  button-block icon-right ion-log-in">Log in</a>
+      <a href="#" href-inappbrowser="/signup" id="login-button23" class="button button-balanced  button-block button-clear"> Or create an account</a>
+    </form>
+  </ion-content>
+</ion-view>
