@@ -1,13 +1,14 @@
 <ion-view title="Clients" id="page2">
-  <ion-content padding="true" class="has-header">
-    <div class="list card" id="clients-card213">
-      <ion-item class="item-icon-left" id="clients-list-item42">
-        <i class="icon ion-ios-person-outline"></i>Client Name
+  <ion-content padding="true" class="has-header" ng-controller="clientsCtrl">
+    <div class="list card" ng-repeat="client in clients | orderBy:'title.rendered'">
+      <ion-item class="item-icon-left">
+        <i class="icon ion-ios-person-outline"></i>{{client.title.rendered}}
         <span class="item-note">Company</span>
       </ion-item>
-      <ion-item class="item-icon-left positive" id="clients-list-item45">
-        <i class="icon ion-ios-telephone-outline"></i>2868 2199</ion-item>
+      <ion-item class="item-icon-left positive">
+        <i class="icon ion-ios-telephone-outline"></i>{{client.content.rendered}}</ion-item>
     </div>
+    <hr/>
     <div class="list card" id="clients-card214">
       <ion-item class="item-icon-left" id="clients-list-item46">
         <i class="icon ion-ios-person-outline"></i>Client Name
@@ -18,30 +19,6 @@
         <span class="item-note">Add number</span>
         <i class="icon ion-ios-plus-outline"></i>
       </ion-item>
-    </div>
-    <div class="list card" id="clients-card215">
-      <ion-item class="item-icon-left" id="clients-list-item48">
-        <i class="icon ion-ios-person-outline"></i>Client Name
-        <span class="item-note">Company</span>
-      </ion-item>
-      <ion-item class="item-icon-left positive" id="clients-list-item49">
-        <i class="icon ion-ios-telephone-outline"></i>2868 2199</ion-item>
-    </div>
-    <div class="list card" id="clients-card216">
-      <ion-item class="item-icon-left" id="clients-list-item50">
-        <i class="icon ion-ios-person-outline"></i>Client Name
-        <span class="item-note">Company</span>
-      </ion-item>
-      <ion-item class="item-icon-left positive" id="clients-list-item51">
-        <i class="icon ion-ios-telephone-outline"></i>2868 2199</ion-item>
-    </div>
-    <div class="list card" id="clients-card217">
-      <ion-item class="item-icon-left" id="clients-list-item52">
-        <i class="icon ion-ios-person-outline"></i>Client Name
-        <span class="item-note">Company</span>
-      </ion-item>
-      <ion-item class="item-icon-left positive" id="clients-list-item53">
-        <i class="icon ion-ios-telephone-outline"></i>2868 2199</ion-item>
     </div>
   </ion-content>
 </ion-view>
