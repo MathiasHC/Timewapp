@@ -8,14 +8,13 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    <script type="text/javascript" src="//cdn.auth0.com/w2/auth0-angular-4.2.6.js"></script>
-    <script type="text/javascript" src="//cdn.auth0.com/w2/auth0-6.7.js"></script>
-    <!-- Auth0's JS library -->
-    <script src="lib/auth0.js/build/auth0.js"></script>
-    <!-- auth0-angular -->
-    <script src="lib/angular-auth0/dist/angular-auth0.js"></script>
+    <!-- Auth0 Lock -->
+    <script src="lib/auth0-lock/build/lock.min.js"></script>
+    <!-- lock-angular -->
+    <script src="lib/angular-lock/dist/angular-lock.min.js"></script>
     <!-- angular-jwt -->
-    <script src="lib/angular-jwt/dist/angular-jwt.js"></script>
+    <script src="lib/angular-jwt/dist/angular-jwt.min.js"></script>
+
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -60,10 +59,12 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/routes.js"></script>
+
     <script src="js/directives.js"></script>
+
     <script src="js/services.js"></script>
 
-    <!-- Only required for Tab projects w/ pages in multiple tabs 
+    <!-- Only required for Tab projects w/ pages in multiple tabs
     <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
     -->
 
@@ -93,9 +94,8 @@
                    class="button button-light  button-block button-outline icon-left ion-ios-email-outline"
                    data-componentid="button21">Contact</a>
                 <div class="spacer" data-componentid="spacer1" style="width: 268px; height: 322px;"></div>
-                <button id="menu-button2" style="border-radius:0px 0px 0px 0px;" ng-click="vm.logout()" ng-controller="loginCtrl"
-                        class="button button-dark  button-full icon-left ion-log-out" data-componentid="button2">
-                    Log Out
+                <button id="menu-button2" style="border-radius:0px 0px 0px 0px;"
+                        class="button button-dark  button-full icon-left ion-log-out" data-componentid="button2">Logout
                 </button>
             </ion-content>
         </ion-side-menu>

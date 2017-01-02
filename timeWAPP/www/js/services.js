@@ -1,40 +1,15 @@
 angular.module('app.services', [])
     .service('authService', authService);
 
-authService.$inject = ['$rootScope', 'angularAuth0', 'authManager', 'jwtHelper', '$location', '$ionicPopup'];
+authService.$inject = ['$rootScope', 'lock', 'authManager', 'jwtHelper'];
 
-function authService($rootScope, angularAuth0, authManager, jwtHelper, $location, $ionicPopup) {
+function authService($rootScope, lock, authManager, jwtHelper) {
 
     var userProfile = JSON.parse(localStorage.getItem('profile')) || {};
 
-    function login(username, password) {
-        angularAuth0.login({
-            connection: 'Username-Password-Authentication',
-            responseType: 'token',
-            ppopup: true,
-            email: username,
-            password: password
-        }, onAuthenticated, null);
+    function login() {
+        lock.show();
     }
-
-    function signup(username, password, callback) {
-        angularAuth0.signup({
-            connection: 'Username-Password-Authentication',
-            responseType: 'token',
-            popup: true,
-            email: username,
-            password: password
-        }, onAuthenticated, null);
-    }
-
-    function loginWithGoogle() {
-        angularAuth0.login({
-            connection: 'google-oauth2',
-            responseType: 'token',
-            popup: true
-        }, onAuthenticated, null);
-    }
-
 
     // Logging out just requires removing the user's
     // id_token and profile
@@ -45,36 +20,26 @@ function authService($rootScope, angularAuth0, authManager, jwtHelper, $location
         userProfile = {};
     }
 
-    function authenticateAndGetProfile() {
-        var result = angularAuth0.parseHash(window.location.hash);
+    // Set up the logic for when a user authenticates
+    // This method is called from app.run.js
+    function registerAuthenticationListener() {
+        lock.on('authenticated', function (authResult) {
+            console.log('authenticated');
+            localStorage.setItem('id_token', authResult.idToken);
+            authManager.authenticate();
+            lock.hide();
 
-        if (result && result.idToken) {
-            onAuthenticated(null, result);
-        } else if (result && result.error) {
-            onAuthenticated(result.error);
-        }
-    }
+            // Redirect to default page
+            location.hash = '#/';
 
-    function onAuthenticated(error, authResult) {
-        if (error) {
-            return $ionicPopup.alert({
-                title: 'Login failed!',
-                template: error
+            lock.getProfile(authResult.idToken, function (error, profile) {
+                if (error) {
+                    console.log(error);
+                }
+
+                localStorage.setItem('profile', JSON.stringify(profile));
+
             });
-        }
-
-        localStorage.setItem('id_token', authResult.idToken);
-        authManager.authenticate();
-
-        angularAuth0.getProfile(authResult.idToken, function (error, profileData) {
-            if (error) {
-                return console.log(error);
-            }
-
-            localStorage.setItem('profile', JSON.stringify(profileData));
-            userProfile = profileData;
-
-            $location.path('/');
         });
     }
 
@@ -90,11 +55,10 @@ function authService($rootScope, angularAuth0, authManager, jwtHelper, $location
     }
 
     return {
+        userProfile: userProfile,
         login: login,
         logout: logout,
-        signup: signup,
-        loginWithGoogle: loginWithGoogle,
-        checkAuthOnRefresh: checkAuthOnRefresh,
-        authenticateAndGetProfile: authenticateAndGetProfile
+        registerAuthenticationListener: registerAuthenticationListener,
+        checkAuthOnRefresh: checkAuthOnRefresh
     }
-};
+}

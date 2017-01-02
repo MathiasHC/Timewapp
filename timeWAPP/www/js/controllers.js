@@ -136,21 +136,17 @@ angular.module('app.controllers', [])
 
         }])
 
-    .controller('loginCtrl', LoginController);
+    .controller('LoginController', LoginController);
 
-LoginController.$inject = ['authService'];
+LoginController.$inject = ['$state', 'authService'];
 
-function LoginController(authService) {
+function LoginController($state, authService) {
     var vm = this;
-    vm.login = login;
-    vm.signup = signup;
 
-    // Log in with  username and password
-    function login() {
-        authService.login(vm.username, vm.password);
+    function doLogin() {
+        authService.login();
     }
 
-    function signup() {
-        authService.login(vm.username, vm.password);
-    }
+    doLogin();
 }
+ 
