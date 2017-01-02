@@ -63,7 +63,7 @@ function config($stateProvider, $urlRouterProvider, lockProvider, jwtOptionsProv
         });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/page1/page3');
+    $urlRouterProvider.otherwise('/page_login');
 
     lockProvider.init({
         clientID: '13L2KoeGzVDHnUrl5JZUFXZo7btdGN5b',
