@@ -35,7 +35,6 @@ angular.module('app.controllers', [])
                     // when the response is available
                     // set clients[] to response.data (data is the arrays of data within the response object).
                     $scope.projects = response.data;
-                    console.log($scope.projects);
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
@@ -57,7 +56,6 @@ angular.module('app.controllers', [])
                     // when the response is available
                     // set clients[] to response.data (data is the arrays of data within the response object).
                     $scope.project = response.data;
-                    console.log($scope.project);
 
                     // GET all time-registrations.
                     $http.get('http://dho.igniters.dk/wp-json/wp/v2/time-registrations')
