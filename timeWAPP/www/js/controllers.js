@@ -82,11 +82,48 @@ angular.module('app.controllers', [])
 
         }])
 
-    .controller('registerTimeCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+    .controller('formSubmitCtrl', ['$scope', '$http', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-        function ($scope, $stateParams) {
+        function ($scope, $http, $stateParams) {
 
+            $scope.submit = function () {
+                alert('Form submit!');
+                $scope.register_time = {
+                    'title':        $scope.form_title,
+                    'content_raw':  $scope.form_desc,
+                    'enter_time':   $scope.form_time
+                    //'project_id':   $scope.form_select
+                };
+
+                $http.post('http://dho.igniters.dk/wp-json/wp/v2/time-registrations', $scope.register_time)
+                    .then(function successCallback(response) {
+                        alert('Success! You time is added.\n' + response.data)
+                    }, function errorCallback(response) {
+                        alert('ERROR!\n' + response.data)
+                    });
+
+                console.log($scope.register_time);
+            }
+
+        }])
+
+    .controller('registerTimeCtrl', ['$scope', '$http', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+        function ($scope, $http, $stateParams) {
+            $scope.projects = [];
+            $http.get('http://dho.igniters.dk/wp-json/wp/v2/projects')
+                .then(function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    // set clients[] to response.data (data is the arrays of data within the response object).
+                    $scope.projects = response.data;
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    alert('ERROR!\n' + response);
+                });
 
         }])
 
