@@ -81,11 +81,12 @@ function config($stateProvider, $urlRouterProvider, lockProvider, jwtOptionsProv
 
     // Configuration for angular-jwt
     jwtOptionsProvider.config({
-        tokenGetter: function () {
+        tokenGetter: function() {
             return localStorage.getItem('id_token');
         },
         whiteListedDomains: ['localhost'],
-        unauthenticatedRedirectPath: '/login'
+        unauthenticatedRedirectPath: '/page_login'
     });
+
 
 }
