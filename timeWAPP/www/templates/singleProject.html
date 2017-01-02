@@ -1,47 +1,18 @@
 <ion-view title="Single Project" id="page5">
-  <ion-content padding="true" class="has-header">
-    <div class="list card" id="singleProject-card24">
-      <ion-item class="item-icon-left" id="singleProject-list-item9">
-        <i class="icon ion-ios-folder-outline"></i>Project Name</ion-item>
-      <ion-item class="item-icon-left" id="singleProject-list-item22">
-        <i class="icon ion-ios-clock-outline"></i>Total Time
-        <span class="item-note">19h 20m 21s</span>
-      </ion-item>
-    </div>
-    <div class="list card" id="singleProject-card28">
-      <ion-item class="item-avatar item-icon-right" id="singleProject-list-item35">
-        <h2>1h 37m 59s</h2>
-        <p>Title</p>
-        <i class="icon ion-ios-calendar-outline icon-accessory"></i>
-      </ion-item>
-    </div>
-    <div class="list card" id="singleProject-card29">
-      <ion-item class="item-avatar item-icon-right" id="singleProject-list-item38">
-        <h2>1h 37m 59s</h2>
-        <p>Title</p>
-        <i class="icon ion-ios-calendar-outline icon-accessory"></i>
-      </ion-item>
-    </div>
-    <div class="list card" id="singleProject-card210">
-      <ion-item class="item-avatar item-icon-right" id="singleProject-list-item39">
-        <h2>1h 37m 59s</h2>
-        <p>Title</p>
-        <i class="icon ion-ios-calendar-outline icon-accessory"></i>
-      </ion-item>
-    </div>
-    <div class="list card" id="singleProject-card211">
-      <ion-item class="item-avatar item-icon-right" id="singleProject-list-item40">
-        <h2>1h 37m 59s</h2>
-        <p>Title</p>
-        <i class="icon ion-ios-calendar-outline icon-accessory"></i>
-      </ion-item>
-    </div>
-    <div class="list card" id="singleProject-card212">
-      <ion-item class="item-avatar item-icon-right" id="singleProject-list-item41">
-        <h2>1h 37m 59s</h2>
-        <p>Title</p>
-        <i class="icon ion-ios-calendar-outline icon-accessory"></i>
-      </ion-item>
-    </div>
-  </ion-content>
+    <ion-content padding="true" class="has-header" ng-controller="singleProjectCtrl">
+        <div class="list card" id="singleProject-card24">
+            <ion-item class="item-icon-left" id="singleProject-list-item9">
+                <i class="icon ion-ios-folder-outline"></i>{{project.title.rendered}}
+            </ion-item>
+        </div>
+
+        <div class="list card" ng-repeat="time in project_times">
+            <ion-item class="item-icon-right">
+                <h2>{{time.acf.enter_time}}</h2>
+                <p>{{time.title.rendered}}</p>
+                <span class="pull-right">{{time.date}}</span>
+                <i class="icon ion-ios-calendar-outline icon-accessory"></i>
+            </ion-item>
+        </div>
+    </ion-content>
 </ion-view>
