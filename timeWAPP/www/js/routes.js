@@ -31,7 +31,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.singleProject', {
-    url: '/page5',
+    url: '/page5/{projectId}',
     views: {
       'tab2': {
         templateUrl: 'templates/singleProject.html',
