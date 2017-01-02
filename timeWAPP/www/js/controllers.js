@@ -11,19 +11,17 @@ angular.module('app.controllers', [])
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
         function ($scope, $http, $stateParams) {
             $scope.clients = [];
-            $http({
-                method: 'GET',
-                url:    'http://dho.igniters.dk/wp-json/wp/v2/clients'
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                // set clients[] to response.data (data is the arrays of data within the response object).
-                $scope.clients = response.data;
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                alert('ERROR!\n' + response);
-            });
+            $http.get('http://dho.igniters.dk/wp-json/wp/v2/clients')
+                .then(function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    // set clients[] to response.data (data is the arrays of data within the response object).
+                    $scope.clients = response.data;
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    alert('ERROR!\n' + response);
+                });
         }])
 
     .controller('projectsCtrl', ['$scope', '$http', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
