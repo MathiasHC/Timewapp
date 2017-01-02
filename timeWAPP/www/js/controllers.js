@@ -1,5 +1,6 @@
 angular.module('app.controllers', [])
 
+
     .filter('removeHTMLTags', function () {
         return function (text) {
             return text ? String(text).replace(/<[^>]+>/gm, '') : '';
@@ -90,9 +91,9 @@ angular.module('app.controllers', [])
             $scope.submit = function () {
                 alert('Form submit!');
                 $scope.register_time = {
-                    'title':        $scope.form_title,
-                    'content_raw':  $scope.form_desc,
-                    'enter_time':   $scope.form_time
+                    'title': $scope.form_title,
+                    'content_raw': $scope.form_desc,
+                    'enter_time': $scope.form_time
                     //'project_id':   $scope.form_select
                 };
 
@@ -135,11 +136,21 @@ angular.module('app.controllers', [])
 
         }])
 
-    .controller('loginCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-        function ($scope, $stateParams) {
+    .controller('loginCtrl', LoginController);
 
+LoginController.$inject = ['authService'];
 
-        }])
- 
+function LoginController(authService) {
+    var vm = this;
+    vm.login = login;
+    vm.signup = signup;
+
+    // Log in with  username and password
+    function login() {
+        authService.login(vm.username, vm.password);
+    }
+
+    function signup() {
+        authService.login(vm.username, vm.password);
+    }
+}
